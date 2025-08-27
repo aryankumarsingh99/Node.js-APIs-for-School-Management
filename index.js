@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 // MySQL connection (use env vars on Render)
 const db = mysql.createConnection({
-  host: process.env.DB_HOST,
+  host: process.env.DB_HOST, 
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
