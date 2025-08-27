@@ -1,11 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const { Pool } = require("pg");  // ✅ use pg instead of mysql2
+const { Pool } = require("pg");  // ✅ PostgreSQL client
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Middleware
+// Middleware: simple logger
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()}  ${req.method} ${req.url}`);
   next();
@@ -13,14 +13,14 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
-// PostgreSQL connection pool (use env vars on Render)
+// PostgreSQL connection pool (Render will provide env vars)
 const db = new Pool({
   host: process.env.DB_HOST, 
   user: process.env.DB_USER,
-  password: process.env.DB_PASS,
+  password: process.env.DB_PASSWORD,  // ✅ updated name
   database: process.env.DB_NAME,
   port: process.env.DB_PORT || 5432,
-  ssl: { rejectUnauthorized: false }, // ✅ required on Render
+  ssl: { rejectUnauthorized: false }, // ✅ required for Render
 });
 
 // Test connection
@@ -32,9 +32,14 @@ db.connect()
 const schoolRoutes = require("./routes/schoolRoutes")(db);
 app.use("/api", schoolRoutes);
 
+// Root route
+app.get("/", (req, res) => {
+  res.send("🎓 Welcome to the School Management API");
+});
+
 // Health check
 app.get("/health", (req, res) => {
-  res.send("Server is alive");
+  res.json({ status: "ok", uptime: process.uptime() });
 });
 
 // Start server
