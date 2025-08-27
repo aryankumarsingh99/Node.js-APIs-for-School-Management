@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const { Pool } = require("pg");  // ✅ PostgreSQL client
+const { Pool } = require("pg"); // ✅ PostgreSQL client
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -17,11 +17,12 @@ app.use(bodyParser.json());
 const db = new Pool({
   host: process.env.DB_HOST, 
   user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,  // ✅ updated name
+  password: process.env.DB_PASSWORD,  // ✅ fixed name
   database: process.env.DB_NAME,
   port: process.env.DB_PORT || 5432,
-  ssl: { rejectUnauthorized: false }, // ✅ required for Render
+  ssl: { rejectUnauthorized: false },
 });
+
 
 // Test connection
 db.connect()
