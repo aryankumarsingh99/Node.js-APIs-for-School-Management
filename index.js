@@ -32,7 +32,15 @@ db.connect((err) => {
 
 // Import school routes and pass db connection
 const schoolRoutes = require("./routes/schoolRoutes")(db);
-app.use("/api", schoolRoutes);;
+app.use("/api", schoolRoutes);
+
+
+
+
+app.get("/health", (req, res) => {
+  res.send("Server is alive");
+});
+
 
 // Start server
 app.listen(port, () => {

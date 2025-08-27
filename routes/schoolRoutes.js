@@ -32,6 +32,7 @@ module.exports = (db) => {
 
   // List Schools (GET)
   router.get("/listSchools", (req, res) => {
+    console.log("✅ GET /listSchools called with query:", req.query);
     const { latitude, longitude } = req.query;
 
     if (!latitude || !longitude) {
